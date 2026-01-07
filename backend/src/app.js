@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5001;
 // CORS configuration - supports multiple origins for development and production
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:5173'];
+    : ['https://think-board-lsdj.vercel.app/'];
 
 app.use(cors({
     origin: function (origin, callback) {
