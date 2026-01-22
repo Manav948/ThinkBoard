@@ -1,53 +1,90 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import RateLimited from '../components/RateLimited'
-import NoteCard from '../components/NoteCard'
-import NotesNotFound from '../components/NotesNotFound'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Navbar from "../components/Navbar";
+import RateLimited from "../components/RateLimited";
+import NoteCard from "../components/NoteCard";
+import NotesNotFound from "../components/NotesNotFound";
+import api from "../lib/axios";
 
 function Home() {
-  const [IsRateLimited, setIsRateLimited] = useState(true);
+  const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [isloading, setIsloading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/notes")
-        setNotes(res.data.allNote)
+        const res = await api.get("/notes");
+        setNotes(res.data.allNote);
         setIsRateLimited(false);
       } catch (error) {
-        console.log("Error in Fetching data");
-        if (error.response && error.response.status === 429) {
+        if (error.response?.status === 429) {
           setIsRateLimited(true);
         } else {
-          console.error("Failed to load notes")
+          console.error("Failed to load notes", error);
         }
       } finally {
-        setIsloading(false)
+        setIsLoading(false);
       }
-    }
+    };
+
     fetchNotes();
-  }, [])
+  }, []);
 
   return (
     <div className="relative min-h-screen">
       <Navbar />
-      {IsRateLimited && <RateLimited />}
 
-      <div className="max-w-7xl mx-auto p-4 mt-6">
-        {isloading && <div className="text-primary text-center py-10">loading notes...</div>}
-        {notes.length === 0 && !IsRateLimited && <NotesNotFound />}
-        {notes.length > 0 && !IsRateLimited && (
+      {isRateLimited && <RateLimited />}
+
+      <main className="mx-auto max-w-7xl px-4 py-6">
+        {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {notes.map(note => (
-              <NoteCard key={note._id} note={note} setNotes={setNotes} />
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="h-40 animate-pulse rounded-2xl bg-gradient-to-r from-gray-200 to-gray-300 shadow-lg"
+              />
             ))}
           </div>
         )}
-      </div>
+
+        {!isLoading && notes.length === 0 && !isRateLimited && (
+          <NotesNotFound />
+        )}
+
+        {!isLoading && notes.length > 0 && !isRateLimited && (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {notes.map((note) => (
+              <motion.div key={note._id} variants={itemVariants}>
+                <NoteCard note={note} setNotes={setNotes} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </main>
     </div>
   );
 }
 
 export default Home;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0 },
+};
