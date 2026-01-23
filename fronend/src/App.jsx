@@ -5,7 +5,7 @@ import NoteDetail from "./pages/NoteDetail";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-500 via-blue-500 to-purple-500 ">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,107,107,0.1),transparent_50%)]" />

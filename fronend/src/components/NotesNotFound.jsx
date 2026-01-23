@@ -8,8 +8,8 @@ const NotesNotFound = () => {
         <NotebookIcon className="size-12 text-blue-600" />
       </div>
       <div>
-        <h3 className="text-3xl font-bold text-gray-900 mb-2">No notes yet</h3>
-        <p className="text-gray-600 leading-relaxed">
+        <h3 className="text-3xl font-bold text-gray-100 mb-2">No notes yet</h3>
+        <p className="text-gray-200 leading-relaxed">
           Ready to organize your thoughts? Create your first note to get started on your journey.
         </p>
       </div>
