@@ -40,7 +40,7 @@ function Navbar() {
             </div>
           </div>
 
-          <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-3 z-10">
+          <div className="absolute hidden md:flex items-center gap-3 z-10">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-white font-bold shadow-lg">
               TB
             </div>

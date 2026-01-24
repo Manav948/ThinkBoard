@@ -14,63 +14,92 @@ const NoteCard = ({ note, setNotes }) => {
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
-
     try {
       await api.delete(`/notes/${id}`);
       setNotes((prev) => prev.filter((n) => n._id !== id));
       toast.success("Note deleted");
-    } catch (error) {
-      console.error("Error in handleDelete", error);
+    } catch {
       toast.error("Failed to delete note");
     }
   };
 
   return (
     <motion.div
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="group relative rounded-2xl border border-gray-200 
-                 bg-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+      whileHover={{ y: -8, scale: 1.025 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="group relative overflow-hidden rounded-3xl
+                 bg-gradient-to-br from-white/[0.06] to-white/[0.02]
+                 border border-white/10
+                 backdrop-blur-xl
+                 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.8)]
+                 hover:shadow-[0_35px_80px_-30px_rgba(0,0,0,0.95)]
+                 transition-all duration-500"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <Link to={`/note/${note._id}`} className="block p-6 relative z-10">
-        <h3 className="mb-3 line-clamp-1 text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+      {/* Neon gradient glow */}
+      <div
+        className="absolute -inset-1 rounded-3xl
+                   bg-gradient-to-br from-purple-500/20 via-cyan-500/20 to-pink-500/20
+                   opacity-0 group-hover:opacity-100
+                   blur-2xl transition-opacity duration-500"
+      />
+
+      {/* Animated border */}
+      <div
+        className="absolute inset-0 rounded-3xl
+                   ring-1 ring-inset ring-white/10
+                   group-hover:ring-cyan-400/40 transition-all"
+      />
+
+      <Link to={`/note/${note._id}`} className="relative z-10 block p-6">
+        <h3
+          className="mb-3 line-clamp-1 text-lg font-semibold
+                     text-white/90
+                     group-hover:text-cyan-300 transition-colors"
+        >
           {note.title}
         </h3>
 
-        <p className="line-clamp-3 text-sm text-gray-600 leading-relaxed">
+        <p className="line-clamp-3 text-sm leading-relaxed text-white/60">
           {note.content}
         </p>
       </Link>
 
-      <div className="flex items-center justify-between px-6 pb-4 relative z-10">
-        <span className="text-xs text-gray-400">
+      <div className="relative z-10 flex items-center justify-between px-6 pb-5">
+        <span className="text-xs text-white/40">
           {new Date(note.createdAt).toLocaleDateString()}
         </span>
-       <div
-          className="flex items-center gap-2 opacity-0 
-                     transition-opacity duration-200 group-hover:opacity-100"
+
+        {/* Actions */}
+        <div
+          className="flex items-center gap-2
+                     opacity-0 translate-y-2
+                     group-hover:opacity-100 group-hover:translate-y-0
+                     transition-all duration-300"
         >
           <button
             onClick={handleEdit}
-            className="p-2 rounded-lg hover:bg-blue-50 transition-colors"
+            className="rounded-xl p-2
+                       bg-cyan-500/10 hover:bg-cyan-500/20"
           >
-            <PenSquareIcon className="size-4 text-blue-600" />
+            <PenSquareIcon className="size-4 text-cyan-400" />
           </button>
 
           <button
             onClick={(e) => handleDelete(e, note._id)}
-            className="p-2 rounded-lg hover:bg-red-50 transition-colors"
+            className="rounded-xl p-2
+                       bg-pink-500/10 hover:bg-pink-500/20"
           >
-            <Trash2Icon className="size-4 text-red-500" />
+            <Trash2Icon className="size-4 text-pink-400" />
           </button>
         </div>
       </div>
 
+      {/* Bottom accent */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-2xl 
-                   ring-1 ring-transparent group-hover:ring-blue-400/40 
-                   transition-all duration-300"
+        className="absolute bottom-0 left-0 h-[2px] w-full
+                   bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500
+                   scale-x-0 group-hover:scale-x-100
+                   origin-left transition-transform duration-500"
       />
     </motion.div>
   );
